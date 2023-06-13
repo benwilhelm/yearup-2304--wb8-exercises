@@ -5,8 +5,11 @@ const titleInputEl = document.getElementById('title')
 const userIdInputEl = document.getElementById('userId')
 const completedInputEl = document.getElementById('completed')
 const updateBtnEl = document.getElementById('updateBtn')
+const cancelBtnEl = document.getElementById('cancelBtn')
 
 const messageEl = document.getElementById('message')
+
+
 
 goBtnEl.addEventListener('click', () => {
   const todoId = todoIdInputEl.value
@@ -42,4 +45,8 @@ updateBtnEl.addEventListener('click', () => {
     const message = `Todo #${updatedTodo.id} successfully updated` 
     messageEl.innerHTML = message
   })
+})
+
+cancelBtnEl.addEventListener('click', () => {
+  window.location.href = './index.html'
 })
