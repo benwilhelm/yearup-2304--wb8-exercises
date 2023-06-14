@@ -11,7 +11,7 @@ function renderCourses(courses, table) {
   const thead = findOrCreateElement('thead', table);
   thead.innerHTML = '';
   const theadTr = thead.insertRow();
-  const columns = ['Course Name', 'Department', 'Course No.', ''];
+  const columns = ['Course Name', 'Department', 'Course No.', , '', ''];
   columns.forEach((column) => {
     const cell = theadTr.insertCell();
     cell.innerHTML = column;
@@ -24,6 +24,11 @@ function renderCourses(courses, table) {
     row.querySelector('.course-name').textContent = course.courseName;
     row.querySelector('.course-dept').textContent = course.dept;
     row.querySelector('.course-number').textContent = course.courseNum;
+
+    const deleteLink = document.createElement('a');
+    deleteLink.textContent = 'Delete Course';
+    deleteLink.href = `./confirm-delete.html?courseId=${course.id}`;
+    row.querySelector('.delete-link').appendChild(deleteLink);
 
     const detailsLink = document.createElement('a');
     detailsLink.textContent = 'Details';
