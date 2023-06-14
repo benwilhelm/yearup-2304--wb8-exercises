@@ -1,47 +1,45 @@
-const table = document.querySelector('table')
+const table = document.querySelector('table');
 
 fetch('http://localhost:8081/api/courses')
   .then((response) => response.json())
   .then((courses) => {
-    renderCourses(courses, table)
+    renderCourses(courses, table);
   });
 
 function renderCourses(courses, table) {
-  const columns = [
-    { propName: 'courseName', heading: 'Course Name' },
-    { propName: 'dept', heading: 'Department' },
-    { propName: 'courseNum', heading: 'Course No.' }
-  ];
+  const trTemplate = document.getElementById('courseRowTemplate');
+  const thead = findOrCreateElement('thead', table);
+  thead.innerHTML = '';
+  const theadTr = thead.insertRow();
+  const columns = ['Course Name', 'Department', 'Course No.', ''];
+  columns.forEach((column) => {
+    const cell = theadTr.insertCell();
+    cell.innerHTML = column;
+  });
 
-  const thead = findOrCreateElement('thead', table)
-  thead.innerHTML = ""
-  const theadTr = thead.insertRow()
-  columns.forEach(column => {
-    const cell = theadTr.insertCell()
-    cell.innerHTML = column.heading
-  })
-  theadTr.insertCell() // empty cell for details column
+  const tbody = findOrCreateElement('tbody', table);
+  tbody.innerHTML = '';
+  courses.forEach((course) => {
+    const row = trTemplate.content.cloneNode(true);
+    row.querySelector('.course-name').textContent = course.courseName;
+    row.querySelector('.course-dept').textContent = course.dept;
+    row.querySelector('.course-number').textContent = course.courseNum;
 
-  const tbody = findOrCreateElement('tbody', table)
-  tbody.innerHTML = ''
-  courses.forEach(course => {
-    const row = tbody.insertRow()
-    columns.forEach(column => {
-      const cell = row.insertCell()
-      const propName = column.propName
-      cell.innerHTML = course[propName]
-    })
-    
-    const detailsCell = row.insertCell()
-    detailsCell.innerHTML = `<a href='details.html?courseId=${course.id}'>Details</a>`
-  })
+    const detailsLink = document.createElement('a');
+    detailsLink.textContent = 'Details';
+    detailsLink.href = `./details.html?courseId=${course.id}`;
+    row.querySelector('.course-details').appendChild(detailsLink);
+    tbody.appendChild(row);
+  });
 }
 
 function findOrCreateElement(selector, root = document) {
-  let element = root.querySelector(selector)
-  if (element) {return element;}
+  let element = root.querySelector(selector);
+  if (element) {
+    return element;
+  }
 
   element = document.createElement(selector);
-  root.appendChild(element)
-  return element
+  root.appendChild(element);
+  return element;
 }
